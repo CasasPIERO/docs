@@ -1,0 +1,188 @@
+---
+swagger: "2.0"
+info:
+  description: "Contrato Módulo de Votación - API Newport App"
+  version: "1.0.7"
+  title: "API Newport APP"
+  termsOfService: "http://swagger.io/terms/"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "petstore.swagger.io"
+basePath: "/v2"
+tags:
+- name: "Votation"
+schemes:
+- "https"
+- "http"
+paths:
+  /votation:
+    post:
+      tags:
+      - "Votation"
+      summary: "get home page to votation section"
+      description: ""
+      operationId: "getVotation"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Votation"
+  /votation/{id}:
+    post:
+      tags:
+      - "Votation"
+      summary: "get alternatives per group"
+      description: ""
+      operationId: "getVotationAlternatives"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/VotationGroups"
+  /votation/voto/registrar:
+    post:
+      tags:
+      - "Votation"
+      summary: "register votes"
+      description: ""
+      operationId: "postRegisterVote"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/RequestVotationRegisterAlternative"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/VotationRegisterAlternative"
+definitions:
+  Votation:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      mensaje:
+        type: "string"
+      datos:
+        type: "array"
+        items: 
+          properties:
+            votationConfiguration:
+              type: "object"
+              properties:
+                id:
+                  type: "integer"
+                eventName:
+                  type: "string"
+                applicationText:
+                  type: "string"
+                typeVotationId:
+                  type: "integer"
+                frequencyVotationId:
+                  type: "integer"
+                isMainPopup:
+                  type: "boolean"
+                initialPopup:
+                  type: "string"
+                homeVotationImage:
+                  type: "string"
+                endVotationImage:
+                  type: "string"
+                alreadyParticipatedPopup:
+                  type: "string"
+                endHomeVotationImage:
+                  type: "string"
+                startVotationbackground:
+                  type: "string"
+                startDrawBackground:
+                  type: "string"
+                startResultBackground:
+                  type: "string"
+                interactionDrawBackground:
+                  type: "string"
+                resultBackground:
+                  type: "string"
+    xml:
+      name: "Votation"
+  VotationGroups:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      mensaje:
+        type: "string"
+      datos:
+        type: "array"
+        items: 
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+            votationId:
+              type: "integer"
+            order:
+              type: "integer"
+            title:
+              type: "string"
+            alternatives:
+              type: "array"
+              items:
+                properties:
+                  id:
+                    type: "integer"
+                  title:
+                    type: "string"
+                  order:
+                    type: "integer"
+                  photo:
+                    type: "string"
+                    default: "image name. (Is null if votation type is Valoracion)"
+    xml:
+      name: "VotationGroup"
+  VotationRegisterAlternative:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      mensaje:
+        type: "string"
+      datos:
+        type: "object"
+        properties:
+          registerSuccess:
+            type: "boolean"
+    xml:
+      name: "VotationRegisterAlternative"
+  RequestVotationRegisterAlternative:
+    type: "object"
+    properties:
+      votationId:
+        type: "integer"
+      alternatives:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            votationGroupId:
+              type: "integer"
+            alternativeId:
+              type: "integer"
