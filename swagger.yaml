@@ -16,22 +16,27 @@ schemes:
 - "https"
 - "http"
 paths:
-  /votation:
+  /votation/get:
     post:
       tags:
       - "Votation"
       summary: "get home page to votation section"
       description: ""
       operationId: "getVotation"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/RequestVotationHome"
       produces:
       - "application/json"
-      parameters: []
       responses:
         200:
           description: "successful operation"
           schema:
             $ref: "#/definitions/Votation"
-  /votation/{id}:
+  /votation/get-groups:
     post:
       tags:
       - "Votation"
@@ -41,10 +46,11 @@ paths:
       consumes:
         - "multipart/form-data"
       parameters:
-        - name: "id"
-          in: "path"
+        - in: "body"
+          name: "body"
           required: true
-          type: "integer"
+          schema:
+            $ref: "#/definitions/RequestGetAlternatives"
       produces:
       - "application/json"
       responses:
@@ -52,7 +58,7 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/VotationGroups"
-  /votation/voto/registrar:
+  /votation/register-votes:
     post:
       tags:
       - "Votation"
@@ -74,63 +80,80 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/VotationRegisterAlternative"
+  /votation/get-alternatives:
+    post:
+      tags:
+      - "Votation"
+      summary: "get alternatives marked by the client"
+      description: ""
+      operationId: "getAlternatives"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/RequestAlternativesByClient"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ResponseAlternativesByClient"
 definitions:
   Votation:
     type: "object"
     properties:
-      success:
-        type: "boolean"
-      mensaje:
-        type: "string"
-      datos:
+      votationConfiguration:
         type: "array"
-        items: 
+        items:
           properties:
-            votationConfiguration:
-              type: "object"
-              properties:
-                id:
-                  type: "integer"
-                eventName:
-                  type: "string"
-                applicationText:
-                  type: "string"
-                typeVotationId:
-                  type: "integer"
-                frequencyVotationId:
-                  type: "integer"
-                isMainPopup:
-                  type: "boolean"
-                initialPopup:
-                  type: "string"
-                homeVotationImage:
-                  type: "string"
-                endVotationImage:
-                  type: "string"
-                alreadyParticipatedPopup:
-                  type: "string"
-                endHomeVotationImage:
-                  type: "string"
-                startVotationbackground:
-                  type: "string"
-                startDrawBackground:
-                  type: "string"
-                startResultBackground:
-                  type: "string"
-                interactionDrawBackground:
-                  type: "string"
-                resultBackground:
-                  type: "string"
+            id:
+              type: "integer"
+            eventName:
+              type: "string"
+            applicationText:
+              type: "string"
+            typeVotationId:
+              type: "string"
+              enum:
+              - "VERSUS"
+              - "MULTIPLE"
+              - "VALORACION"
+            frequencyVotationId:
+              type: "integer"
+            participated:
+              type: "boolean"
+            isMainPopup:
+              type: "boolean"
+            initialPopup:
+              type: "string"
+            homeVotationImage:
+              type: "string"
+            endVotationImage:
+              type: "string"
+            alreadyParticipatedPopup:
+              type: "string"
+            endHomeVotationImage:
+              type: "string"
+            startVotationbackground:
+              type: "string"
+            startDrawBackground:
+              type: "string"
+            startResultBackground:
+              type: "string"
+            interactionDrawBackground:
+              type: "string"
+            resultBackground:
+              type: "string"
     xml:
       name: "Votation"
   VotationGroups:
     type: "object"
     properties:
-      success:
-        type: "boolean"
-      mensaje:
-        type: "string"
-      datos:
+      votationGroups:
         type: "array"
         items: 
           type: "object"
@@ -161,15 +184,8 @@ definitions:
   VotationRegisterAlternative:
     type: "object"
     properties:
-      success:
+      registerSuccess:
         type: "boolean"
-      mensaje:
-        type: "string"
-      datos:
-        type: "object"
-        properties:
-          registerSuccess:
-            type: "boolean"
     xml:
       name: "VotationRegisterAlternative"
   RequestVotationRegisterAlternative:
@@ -186,3 +202,42 @@ definitions:
               type: "integer"
             alternativeId:
               type: "integer"
+    xml:
+      name: "RequestVotationRegisterAlternative"
+  RequestVotationHome:
+    type: "object"
+    properties:
+      siteId:
+        type: "integer"
+    xml:
+      name: "RequestVotationHome"
+  RequestGetAlternatives:
+    type: "object"
+    properties:
+      votationId:
+        type: "integer"
+    xml:
+      name: "RequestGetAlternatives"
+  RequestAlternativesByClient:
+    type: "object"
+    properties:
+      votationId:
+        type: "integer"
+    xml:
+      name: "RequestAlternativesByClient"
+  ResponseAlternativesByClient:
+    type: "object"
+    properties:
+      votationId:
+        type: "integer"
+      alternatives:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            votationGroupId:
+              type: "integer"
+            alternativeId:
+              type: "integer"
+    xml:
+      name: "ResponseAlternativesByClient"
