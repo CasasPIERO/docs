@@ -16,7 +16,7 @@ schemes:
 - "https"
 - "http"
 paths:
-  /votation/get:
+  /votacion/get:
     post:
       tags:
       - "Votation"
@@ -36,7 +36,7 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/Votation"
-  /votation/get-groups:
+  /votacion/get-groups:
     post:
       tags:
       - "Votation"
@@ -58,7 +58,7 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/VotationGroups"
-  /votation/register-votes:
+  /votacion/register-votes:
     post:
       tags:
       - "Votation"
@@ -80,7 +80,7 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/VotationRegisterAlternative"
-  /votation/get-alternatives:
+  /votacion/get-alternatives:
     post:
       tags:
       - "Votation"
