@@ -16,7 +16,7 @@ schemes:
 - "https"
 - "http"
 paths:
-  /votacion/get:
+  /votacion/obtener:
     post:
       tags:
       - "Votation"
@@ -36,7 +36,7 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/Votation"
-  /votacion/get-groups:
+  /votacion/obtener-grupos:
     post:
       tags:
       - "Votation"
@@ -58,7 +58,7 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/VotationGroups"
-  /votacion/register-votes:
+  /votacion/registrar-votos:
     post:
       tags:
       - "Votation"
@@ -80,164 +80,166 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/VotationRegisterAlternative"
-  /votacion/get-alternatives:
-    post:
-      tags:
-      - "Votation"
-      summary: "get alternatives marked by the client"
-      description: ""
-      operationId: "getAlternatives"
-      consumes:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          required: true
-          schema:
-            $ref: "#/definitions/RequestAlternativesByClient"
-      produces:
-      - "application/json"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/ResponseAlternativesByClient"
 definitions:
   Votation:
     type: "object"
     properties:
-      votationConfiguration:
+      listaVotacionConfiguracion:
         type: "array"
         items:
           properties:
             id:
               type: "integer"
-            eventName:
+            nombreEvento:
               type: "string"
-            applicationText:
+            nombreAplicacion:
               type: "string"
-            typeVotationId:
+            inicioPeriodo:
+              type: "string"
+              format: "date-time"
+            finPeriodo:
+              type: "string"
+              format: "date-time"
+            sitioId:
+              type: "integer"
+            tipoCliente:
               type: "string"
               enum:
-              - "VERSUS"
-              - "MULTIPLE"
-              - "VALORACION"
-            frequencyVotationId:
+              - "CATEGORIA"
+              - "TODOS"
+            frecuenciaVotacionId:
               type: "integer"
-            participated:
+            cantidadVotosInfinity:
+              type: "integer"
+            cantidadVotosGalaxy:
+              type: "integer"
+            cantidadVotosSky:
+              type: "integer"
+            cantidadVotosUniverse:
+              type: "integer"
+            cantidadVotosStar:
+              type: "integer"
+            cantidadVotosSinClubCard:
+              type: "integer"
+            isPopupPrincipal:
               type: "boolean"
-            isMainPopup:
+            fondoPopupInicial:
+              type: "string"
+            fondoPortadaVotacion:
+              type: "string"
+            fondoPortadaVotacionFin:
+              type: "string"
+            fondoPopupFinalVotacion:
+              type: "string"
+            fondoPopupYaParticipaste:
+              type: "string"
+            fondoInicioSorteo:
+              type: "string"
+            fondoInteraccionSorteo:
+              type: "string"
+            fondoInicioResultado:
+              type: "string"
+            fondoResultado:
+              type: "string"
+            estado:
               type: "boolean"
-            initialPopup:
-              type: "string"
-            homeVotationImage:
-              type: "string"
-            endVotationImage:
-              type: "string"
-            alreadyParticipatedPopup:
-              type: "string"
-            endHomeVotationImage:
-              type: "string"
-            startVotationbackground:
-              type: "string"
-            startDrawBackground:
-              type: "string"
-            startResultBackground:
-              type: "string"
-            interactionDrawBackground:
-              type: "string"
-            resultBackground:
-              type: "string"
+            tipoVotacion:
+              type: "object"
+              properties:
+                id:
+                  type: "integer"
+                nombre:
+                  type:
+                    "string"
+                maximoGrupos:
+                  type:
+                    "integer"
+                estado:
+                  type:
+                    "boolean"
+                nombreConstante:
+                  type: "string"
+                  enum:
+                  - "VERSUS"
+                  - "MULTIPLE"
+                  - "VALORACION"
+      listaVotacionesYaRealizadas:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            votacionId:
+              type: "integer"
+            realizada:
+              type: "boolean"
+      tarjetaClienteCategoria:
+        type: "string"
     xml:
       name: "Votation"
   VotationGroups:
     type: "object"
     properties:
-      votationGroups:
+      listaGruposAlternativas:
         type: "array"
         items: 
           type: "object"
           properties:
             id:
               type: "integer"
-            votationId:
-              type: "integer"
-            order:
-              type: "integer"
-            title:
+            titulo:
               type: "string"
-            alternatives:
+            orden:
+              type: "integer"
+            estado:
+              type: "boolean"
+            votacionConfiguracionId:
+              type: "integer"
+            alternativas:
               type: "array"
               items:
                 properties:
                   id:
                     type: "integer"
-                  title:
+                  nombre:
                     type: "string"
-                  order:
+                  orden:
                     type: "integer"
-                  photo:
+                  foto:
                     type: "string"
                     default: "image name. (Is null if votation type is Valoracion)"
+                  votacionGrupoId:
+                    type: "integer"
     xml:
       name: "VotationGroup"
   VotationRegisterAlternative:
     type: "object"
     properties:
-      registerSuccess:
+      registroCorrecto:
         type: "boolean"
     xml:
       name: "VotationRegisterAlternative"
   RequestVotationRegisterAlternative:
     type: "object"
     properties:
-      votationId:
+      votacionId:
         type: "integer"
-      alternatives:
+      listaAlternativas:
         type: "array"
         items:
-          type: "object"
-          properties:
-            votationGroupId:
-              type: "integer"
-            alternativeId:
-              type: "integer"
+          type: "integer"
     xml:
       name: "RequestVotationRegisterAlternative"
   RequestVotationHome:
     type: "object"
     properties:
-      siteId:
+      sitioId:
         type: "integer"
     xml:
       name: "RequestVotationHome"
   RequestGetAlternatives:
     type: "object"
     properties:
-      votationId:
+      votacionId:
         type: "integer"
     xml:
       name: "RequestGetAlternatives"
-  RequestAlternativesByClient:
-    type: "object"
-    properties:
-      votationId:
-        type: "integer"
-    xml:
-      name: "RequestAlternativesByClient"
-  ResponseAlternativesByClient:
-    type: "object"
-    properties:
-      votationId:
-        type: "integer"
-      alternatives:
-        type: "array"
-        items:
-          type: "object"
-          properties:
-            votationGroupId:
-              type: "integer"
-            alternativeId:
-              type: "integer"
-    xml:
-      name: "ResponseAlternativesByClient"
