@@ -163,13 +163,6 @@ definitions:
                   - "VERSUS"
                   - "MULTIPLE"
                   - "VALORACION"
-      listaVotacionesInteraccion:
-        type: "array"
-        items:
-          type: "object"
-          properties:
-            votacionId:
-              type: "integer"
             puedeInteractuar:
               type: "boolean"
       tarjetaClienteCategoria:
